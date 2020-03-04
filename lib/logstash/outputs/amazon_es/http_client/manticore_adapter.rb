@@ -105,7 +105,7 @@ module LogStash; module Outputs; class ElasticSearch; class HttpClient;
       key = Seahorse::Client::Http::Request.new(options={:endpoint=>url, :http_method => method.to_s.upcase,
                                                        :headers => params[:headers],:body => params[:body]})
 
-      aws_signer = Aws::Signers::V4.new(@credentials, 'es', @region )
+      aws_signer = Aws::Sigv4::Signer.new(@credentials, 'es', @region )
 
 
       signed_key =  aws_signer.sign(key)
