@@ -105,13 +105,14 @@ module LogStash; module Outputs; class ElasticSearch; class HttpClient;
       key = Seahorse::Client::Http::Request.new(options={:endpoint=>url, :http_method => method.to_s.upcase,
                                                        :headers => params[:headers],:body => params[:body]})
 
-      aws_signer = Aws::Sigv4::Signer.new(@credentials, 'es', @region )
-
+      aws_signer = Aws::Sigv4::Signer.new(
+        service: 'es',
+        region: @region,
+        credentials_provider: @credentials
+      )
 
       signed_key =  aws_signer.sign(key)
       params[:headers] =  params[:headers].merge(signed_key.headers)
-
-
 
       resp = @manticore.send(method.downcase, request_uri.to_s, params)
 
