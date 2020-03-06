@@ -111,7 +111,7 @@ module LogStash; module Outputs; class ElasticSearch; class HttpClient;
         credentials_provider: @credentials
       )
 
-      signed_key =  aws_signer.sign(key)
+      signed_key =  aws_signer.sign_request(key)
       params[:headers] =  params[:headers].merge(signed_key.headers)
 
       resp = @manticore.send(method.downcase, request_uri.to_s, params)
